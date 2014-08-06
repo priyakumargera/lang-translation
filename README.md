@@ -2,6 +2,8 @@ lang-translation
 ================
 
 A php application which can display the word and its translation in other language. It can also perform operations like insert, modify, delete.
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -119,6 +121,103 @@ else
 <td width="250"> </td>
 <td>
 <input name="add" type="submit" id="add" value="Add vocabulary">
+</td>
+</tr>
+</table>
+</form>
+<?php
+}
+?>
+</body>
+</html>
+
+<html>
+<title>Home</title>
+<body>
+<table align='center'>
+<tr><th><a href="view.php">View</a></th>&nbsp;
+<th>         </th>
+        <th><a href="insert.php">Insert</a><b></th>
+<th>         </th>
+        <th><a href="update1.php">Update</a><b></th>
+<th>         </th>
+        <th><a href="delete1.php">Delete</a><b></th>
+        
+</tr>
+</table>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Update Record in Vocabulary</title>
+<meta charset="utf-8">
+</head>
+<body>
+<?php
+if(isset($_POST['add']))
+{
+$dbhost = 'localhost:3307';
+$dbuser = 'root';
+$dbpass = 'root';
+$conn = mysql_connect($dbhost, $dbuser, $dbpass);
+if(! $conn )
+{
+  die('Could not connect: ' . mysql_error());
+}
+
+if(! get_magic_quotes_gpc() )
+{
+   $transliteration = addslashes ($_POST['transliteration']);
+   $meaning = addslashes ($_POST['meaning']);
+   
+}
+else
+{
+   $transliteration = $_POST['transliteration'];
+   $meaning = $_POST['meaning'];
+}
+
+$sql="UPDATE vocabulary SET transliteration="."('$transliteration')"." WHERE meaning="."('$meaning')";
+
+
+mysql_select_db('translation');
+$retval = mysql_query( $sql, $conn );
+if(! $retval )
+{
+  die('Could not update data: ' . mysql_error());
+}
+echo "Updateded data successfully\n";
+mysql_close($conn);
+}
+else
+{
+?>
+<form method="post" action="<?php $_PHP_SELF ?>">
+<table width="600" border="0" cellspacing="1" cellpadding="2">
+<tr>
+<td width="250"><h3>Meaning</h3></td>
+<td>
+<input name="meaning" type="text" id="meaning">
+</td>
+</tr>
+<tr>
+<td width="250"><h3> Transliteration</h3></td>
+<td>
+<input name="transliteration" type="text" id="transliteration">
+</td>
+</tr>
+
+<tr>
+<td width="250"> </td>
+<td> </td>
+</tr>
+<tr>
+<td width="250"> </td>
+<td>
+<input name="add" type="submit" id="add" value="Update vocabulary">
 </td>
 </tr>
 </table>
